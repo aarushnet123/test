@@ -3,11 +3,12 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 # --- DB Connection ---
+
 @st.cache_resource
 def get_engine():
-    return create_engine(
-        "mssql+pymssql://readonlylogin:eutop123#@eutop.database.windows.net:1433/eutop_companies"
-    )
+    creds = st.secrets["db"]
+    conn_str = f"mssql+pymssql://{creds.user}:{creds.password}@{creds.host}:{creds.port}/{creds.db}"
+    return create_engine(conn_str)
 
 engine = get_engine()
 
